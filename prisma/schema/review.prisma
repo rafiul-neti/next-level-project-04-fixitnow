@@ -1,20 +1,19 @@
 model Review {
-    id String @id @default(uuid())
-    content String
-    givenStars Int
+  id         String @id @default(uuid())
+  content    String
+  givenStars Int
 
-    userId String
-    user User @relation(fields: [userId], references: [id])
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
 
-    technicianId String
-    technicians TechnicianProfile @relation(fields: [technicianId], references: [id])
+  technicianId String
+  technicians  TechnicianProfile @relation(fields: [technicianId], references: [id])
 
-    bookingId String @unique
-    booking Booking @relation(fields: [bookingId], references: [id])
+  bookingId String  @unique
+  booking   Booking @relation(fields: [bookingId], references: [id])
 
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-
-    @@map("reviews")
+  @@map("reviews")
 }

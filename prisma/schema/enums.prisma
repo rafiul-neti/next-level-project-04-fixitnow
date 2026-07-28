@@ -12,24 +12,24 @@ enum UserStatus {
 
 // bookings enums
 enum BookingStatus {
-    REQUESTED
-    ACCEPTED
-    DECLINED
-    PAID
-    IN_PROGRESS
-    COMPLETED
+  REQUESTED
+  ACCEPTED
+  DECLINED
+  PAID
+  IN_PROGRESS
+  COMPLETED
 }
 
 // technicinas enums
 enum WeekendDays {
-    FRI
-    SAT
-    SUN
+  FRI
+  SAT
+  SUN
 }
 
 // payments enums
 enum PaymentStatus {
-    PENDING
-    COMPLETED
-    FAILED
+  PENDING
+  COMPLETED
+  FAILED
 }

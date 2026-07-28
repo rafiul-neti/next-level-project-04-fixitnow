@@ -5,12 +5,12 @@ model User {
   phone    String @unique
   password String
 
-  addressId String @unique
-  address Address @relation(fields: [addressId], references: [id])
+  addressId String  @unique
+  address   Address @relation(fields: [addressId], references: [id])
 
   technician TechnicianProfile?
-  bookings Booking[]
-  reviews Review[]
+  bookings   Booking[]
+  reviews    Review[]
 
   role   Role       @default(CUSTOMER)
   status UserStatus @default(UNBAN)
@@ -22,17 +22,17 @@ model User {
 }
 
 model Address {
-    id String @id @default(uuid())
-    address_line_1 String
-    address_line_2 String?
-    postCode String
-    city String
-    region String
+  id             String  @id @default(uuid())
+  address_line_1 String
+  address_line_2 String?
+  postCode       String
+  city           String
+  region         String
 
-    user User?
+  user User?
 
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-    @@map("addresses")
+  @@map("addresses")
 }
