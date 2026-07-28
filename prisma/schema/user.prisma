@@ -8,7 +8,9 @@ model User {
   addressId String @unique
   address Address @relation(fields: [addressId], references: [id])
 
-  technicians TechnicianProfile?
+  technician TechnicianProfile?
+  bookings Booking[]
+  reviews Review[]
 
   role   Role       @default(CUSTOMER)
   status UserStatus @default(UNBAN)

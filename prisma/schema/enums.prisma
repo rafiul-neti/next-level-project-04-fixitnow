@@ -9,3 +9,27 @@ enum UserStatus {
   BAN
   UNBAN
 }
+
+// bookings enums
+enum BookingStatus {
+    REQUESTED
+    ACCEPTED
+    DECLINED
+    PAID
+    IN_PROGRESS
+    COMPLETED
+}
+
+// technicinas enums
+enum WeekendDays {
+    FRI
+    SAT
+    SUN
+}
+
+// payments enums
+enum PaymentStatus {
+    PENDING
+    COMPLETED
+    FAILED
+}

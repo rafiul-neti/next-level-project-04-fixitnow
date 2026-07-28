@@ -8,8 +8,27 @@ model TechnicianProfile {
     userId String @unique
     user User @relation(fields: [userId], references: [id])
 
+    reviews Review[]
+    availabity Availability?
+    bookings Booking[]
+
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
     @@map("technicianProfiles")
+}
+
+model Availability {
+    id String @id @default(uuid())
+    weekendDays WeekendDays @default(FRI)
+    startTime DateTime
+    endTime DateTime
+
+    technicianId String @unique
+    technician TechnicianProfile @relation(fields: [technicianId], references: [id])
+
+    createdAt DateTime @default(now())
+    updatedAT DateTime @updatedAt
+
+    @@map("availability")
 }
