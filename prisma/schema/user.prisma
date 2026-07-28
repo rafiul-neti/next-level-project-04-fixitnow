@@ -8,6 +8,8 @@ model User {
   addressId String @unique
   address Address @relation(fields: [addressId], references: [id])
 
+  technicians TechnicianProfile?
+
   role   Role       @default(CUSTOMER)
   status UserStatus @default(UNBAN)
 
