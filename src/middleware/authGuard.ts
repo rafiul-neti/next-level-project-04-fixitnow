@@ -63,3 +63,5 @@ const authGuard = (...roles: any) => {
     }
   };
 };
+
+export default authGuard;

@@ -1,16 +1,26 @@
 import bcrypt from "bcryptjs";
 import { prisma } from "../../lib/prisma";
 import { AppError } from "../../utils/AppError";
-import { ILoginPayload, IRegisterUserPayload } from "./auth.interface";
+import { ILoginPayload, IRegisterPayload } from "./auth.interface";
 import httpStatus from "http-status";
 import config from "../../config";
 import { jwtUtils } from "../../utils/jwt";
+import { Role } from "../../../generated/prisma/enums";
 
-const registerUserIntoDB = async (payload: IRegisterUserPayload) => {
-  const { name, email, password, phone } = payload;
+const registerUserIntoDB = async (payload: IRegisterPayload) => {
+  const { name, email, password, phone, registeringAs } = payload;
 
   if (phone.length !== 11) {
     throw new AppError(httpStatus.BAD_REQUEST, "Invalid phone number");
+  }
+
+  if (registeringAs === Role.TECHNICIAN) {
+    if (!payload.hourlyRate) {
+      throw new AppError(
+        httpStatus.BAD_REQUEST,
+        "Technicians must provide hourly rate",
+      );
+    }
   }
 
   const isUserExist = await prisma.user.findFirst({
@@ -35,8 +45,22 @@ const registerUserIntoDB = async (payload: IRegisterUserPayload) => {
       email,
       password: hashedPassword,
       phone,
+      role: registeringAs,
+      ...(registeringAs === Role.TECHNICIAN && {
+        technician: {
+          create: {
+            bio: payload.bio,
+            profilePhoto: payload.profilePhoto,
+            hourlyRate: payload.hourlyRate,
+            experienceYears: payload.experienceYears,
+          },
+        },
+      }),
     },
     omit: { password: true },
+    ...(registeringAs === Role.TECHNICIAN && {
+      include: { technician: { omit: { userId: true } } },
+    }),
   });
 
   return createdUser;
@@ -74,7 +98,18 @@ const loginUserIntoApp = async (payload: ILoginPayload) => {
   return { accessToken, refreshToken };
 };
 
+const getCurrentUserFromDB = async (userId: string, role: string) => {
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    omit: { password: true },
+    ...(role === Role.TECHNICIAN && { include: { technician: true } }),
+  });
+
+  return user;
+};
+
 export const authService = {
   registerUserIntoDB,
   loginUserIntoApp,
+  getCurrentUserFromDB,
 };

@@ -2,7 +2,7 @@ model TechnicianProfile {
   id              String  @id @default(uuid())
   profilePhoto    String?
   bio             String?
-  experienceYears Float
+  experienceYears Float @default(0)
   hourlyRate      Int
 
   userId String @unique

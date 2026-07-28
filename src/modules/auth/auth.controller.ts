@@ -3,6 +3,7 @@ import catchAsync from "../../utils/catchAsync";
 import { authService } from "./auth.service";
 import { sendSuccessResponse } from "../../utils/sendSuccessResponse";
 import httpStatus from "http-status";
+import { JwtPayload } from "jsonwebtoken";
 
 const registerUser = catchAsync(async (req: Request, res: Response) => {
   const result = await authService.registerUserIntoDB(req.body);
@@ -40,7 +41,19 @@ const loginUser = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const getCurrentUser = catchAsync(async (req: Request, res: Response) => {
+  const { id, role } = req.user as JwtPayload;
+  const user = await authService.getCurrentUserFromDB(id as string, role) ;
+
+  sendSuccessResponse(res, {
+    statusCode: httpStatus.OK,
+    message: "User retrieved successfully",
+    data: user,
+  });
+});
+
 export const authController = {
   registerUser,
   loginUser,
+  getCurrentUser,
 };
