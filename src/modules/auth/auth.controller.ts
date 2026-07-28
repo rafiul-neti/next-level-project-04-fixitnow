@@ -15,12 +15,28 @@ const registerUser = catchAsync(async (req: Request, res: Response) => {
 });
 
 const loginUser = catchAsync(async (req: Request, res: Response) => {
-  const result = await authService.loginUserIntoApp(req.body);
+  const { accessToken, refreshToken } = await authService.loginUserIntoApp(
+    req.body,
+  );
+
+  res.cookie("accessToken", accessToken, {
+    httpOnly: true,
+    secure: false,
+    sameSite: "none",
+    maxAge: 24 * 60 * 60 * 1000,
+  });
+
+  res.cookie("refreshToken", refreshToken, {
+    httpOnly: true,
+    secure: false,
+    sameSite: "none",
+    maxAge: 7 * 24 * 60 * 60 * 1000,
+  });
 
   sendSuccessResponse(res, {
     statusCode: httpStatus.OK,
     message: "User successfully logged in.",
-    data: result,
+    data: { accessToken },
   });
 });
 
