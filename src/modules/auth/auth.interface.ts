@@ -3,7 +3,16 @@ export interface IRegisterUserPayload {
   email: string;
   password: string;
   phone: string;
-  address: IAddress;
+}
+
+export interface ILoginPayload {
+  email: string;
+  password: string;
+}
+
+enum WhereAbout {
+  HOME,
+  OFFICE,
 }
 
 export interface IAddress {
@@ -12,4 +21,5 @@ export interface IAddress {
   postCode: string;
   city: string;
   region: string;
+  whereAbout?: WhereAbout;
 }

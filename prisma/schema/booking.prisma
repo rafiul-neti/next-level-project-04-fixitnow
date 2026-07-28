@@ -10,6 +10,9 @@ model Booking {
   technicianId String
   technician   TechnicianProfile @relation(fields: [technicianId], references: [id])
 
+  addressId String
+  address Address @relation(fields: [addressId], references: [id])
+
   review  Review?
   payment Payment?
 
@@ -18,4 +21,26 @@ model Booking {
   updatedAt DateTime      @updatedAt
 
   @@map("bookings")
+}
+
+model Address {
+  id             String  @id @default(uuid())
+  address_line_1 String
+  address_line_2 String?
+  postCode       String
+  city           String
+  region         String
+
+  booking Booking[]
+
+  userId String
+  user User @relation(fields: [userId], references: [id])
+
+  whereAbout WhereAbout @default(HOME)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, whereAbout])
+  @@map("addresses")
 }

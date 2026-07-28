@@ -33,3 +33,9 @@ enum PaymentStatus {
   COMPLETED
   FAILED
 }
+
+// address whereabout status
+enum WhereAbout {
+  HOME
+  OFFICE
+}
