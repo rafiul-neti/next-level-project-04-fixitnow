@@ -115,7 +115,12 @@ const getCurrentUserFromDB = async (userId: string, role: string) => {
   const user = await prisma.user.findUnique({
     where: { id: userId },
     omit: { password: true },
-    ...(role === Role.TECHNICIAN && { include: { technician: true } }),
+    ...(role === Role.TECHNICIAN && {
+      include: { technician: { omit: { userId: true } } },
+    }),
+    ...(role === Role.CUSTOMER && {
+      include: { addresses: { omit: { id: true, userId: true } } },
+    }),
   });
 
   return user;

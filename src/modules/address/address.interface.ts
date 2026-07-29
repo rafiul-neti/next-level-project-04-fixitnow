@@ -1,7 +1,4 @@
-enum WhereAbout {
-  HOME,
-  OFFICE,
-}
+import { WhereAbout } from "../../../generated/prisma/enums";
 
 export interface IAddress {
   address_line_1: string;
@@ -9,5 +6,5 @@ export interface IAddress {
   postCode: string;
   city: string;
   region: string;
-  whereAbout?: WhereAbout;
+  whereAbout: WhereAbout;
 }

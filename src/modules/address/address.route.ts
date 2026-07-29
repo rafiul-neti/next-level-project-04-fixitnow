@@ -10,6 +10,10 @@ router.get(
   authGuard(Role.CUSTOMER, Role.TECHNICIAN, Role.ADMIN),
   addressController.getAddress,
 );
-router.put("/", addressController.createOrUpdateAddress);
+router.put(
+  "/",
+  authGuard(Role.CUSTOMER, Role.TECHNICIAN, Role.ADMIN),
+  addressController.createOrUpdateAddress,
+);
 
 export const addressRoutes = router;

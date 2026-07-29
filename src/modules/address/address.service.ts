@@ -10,7 +10,39 @@ const getAdressByUserId = async (userId: string) => {
   return addresses;
 };
 
-const createOrUpdateAddress = async (payload: IAddress) => {};
+const createOrUpdateAddress = async (userId: string, payload: IAddress) => {
+  const { address_line_1, address_line_2, postCode, city, region, whereAbout } =
+    payload;
+
+  const user = await prisma.user.findUniqueOrThrow({ where: { id: userId } });
+
+  const createdAddress = await prisma.address.upsert({
+    where: {
+      userId_whereAbout: {
+        userId,
+        whereAbout,
+      },
+    },
+    update: {
+      address_line_1,
+      address_line_2,
+      postCode,
+      city,
+      region,
+    },
+    create: {
+      address_line_1,
+      address_line_2,
+      postCode,
+      city,
+      region,
+      whereAbout,
+      userId,
+    },
+  });
+
+  return createdAddress;
+};
 
 export const addressService = {
   getAdressByUserId,

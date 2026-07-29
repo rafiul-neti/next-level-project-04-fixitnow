@@ -15,7 +15,18 @@ const getAddress = catchAsync(async (req: Request, res: Response) => {
 });
 
 const createOrUpdateAddress = catchAsync(
-  async (req: Request, res: Response) => {},
+  async (req: Request, res: Response) => {
+    const result = await addressService.createOrUpdateAddress(
+      req.user?.id as string,
+      req.body,
+    );
+
+    sendSuccessResponse(res, {
+      statusCode: httpStatus.CREATED,
+      message: "Address saved successfully",
+      data: result,
+    });
+  },
 );
 
 export const addressController = { getAddress, createOrUpdateAddress };
