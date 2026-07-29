@@ -53,13 +53,26 @@ const registerUserIntoDB = async (payload: IRegisterPayload) => {
             profilePhoto: payload.profilePhoto,
             hourlyRate: payload.hourlyRate,
             experienceYears: payload.experienceYears,
+            serviceAreas: [payload.serviceAreas],
+            availabity: {
+              create: {
+                weekendDays: payload.weekendDays,
+                startTime: payload.startTime,
+                endTime: payload.endTime,
+              },
+            },
           },
         },
       }),
     },
     omit: { password: true },
     ...(registeringAs === Role.TECHNICIAN && {
-      include: { technician: { omit: { userId: true } } },
+      include: {
+        technician: {
+          omit: { userId: true },
+          include: { availabity: { omit: { id: true, technicianId: true } } },
+        },
+      },
     }),
   });
 

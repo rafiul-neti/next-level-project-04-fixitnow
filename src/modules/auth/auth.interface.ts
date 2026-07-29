@@ -1,3 +1,5 @@
+import { WeekendDays } from "../../../generated/prisma/enums";
+
 interface IBaseRegisterPayload {
   name: string;
   email: string;
@@ -15,25 +17,15 @@ interface ITechnicianRegisterPayload extends IBaseRegisterPayload {
   profilePhoto?: string;
   experienceYears?: number;
   hourlyRate: number;
+  serviceAreas: string;
+  weekendDays: WeekendDays;
+  startTime: string;
+  endTime: string;
 }
 
 export interface ILoginPayload {
   email: string;
   password: string;
-}
-
-enum WhereAbout {
-  HOME,
-  OFFICE,
-}
-
-export interface IAddress {
-  address_line_1: string;
-  address_line_2?: string;
-  postCode: string;
-  city: string;
-  region: string;
-  whereAbout?: WhereAbout;
 }
 
 export type IRegisterPayload =

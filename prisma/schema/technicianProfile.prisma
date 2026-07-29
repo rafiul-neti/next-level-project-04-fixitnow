@@ -22,8 +22,8 @@ model TechnicianProfile {
 model Availability {
   id          String      @id @default(uuid())
   weekendDays WeekendDays @default(FRI)
-  startTime   DateTime
-  endTime     DateTime
+  startTime   String
+  endTime     String
 
   technicianId String            @unique
   technician   TechnicianProfile @relation(fields: [technicianId], references: [id])

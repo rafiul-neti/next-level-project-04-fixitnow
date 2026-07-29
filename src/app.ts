@@ -18,7 +18,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/address", addressRoutes);
 
 app.get("/", (req: Request, res: Response) => {
-  res.send("This response if from the root route!");
+  res.json({ message: "This response is from the root route!" });
 });
 
 app.use(globalErrorHandler);
