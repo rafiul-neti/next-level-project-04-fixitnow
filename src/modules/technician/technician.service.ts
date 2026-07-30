@@ -68,4 +68,22 @@ const getAllTechniciansFromDB = async (query: TechnicianQuery) => {
   return technicians;
 };
 
-export const technicianService = { getAllTechniciansFromDB };
+const getSingleTechnicianByID = async (technicianId: string) => {
+  const technician = await prisma.technicianProfile.findUniqueOrThrow({
+    where: { id: technicianId },
+    include: {
+      reviews: { omit: { technicianId: true, id: true } },
+      availabity: {
+        select: { weekendDays: true, startTime: true, endTime: true },
+      },
+      _count: { select: { reviews: true } },
+    },
+  });
+
+  return technician;
+};
+
+export const technicianService = {
+  getAllTechniciansFromDB,
+  getSingleTechnicianByID,
+};
