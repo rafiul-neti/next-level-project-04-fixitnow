@@ -1,4 +1,3 @@
-import { WeekendDays } from "../../../generated/prisma/enums";
 import { TechnicianProfileWhereInput } from "../../../generated/prisma/models";
 import { prisma } from "../../lib/prisma";
 import { TechnicianQuery } from "./technician.validation";
