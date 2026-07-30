@@ -6,6 +6,7 @@ import { authRoutes } from "./modules/auth/auth.route";
 import { globalErrorHandler } from "./middleware/globalErrorHandler";
 import { addressRoutes } from "./modules/address/address.route";
 import { servicesRoutes } from "./modules/service/services.route";
+import { technicianRoutes } from "./modules/technician/technician.route";
 
 const app: Application = express();
 
@@ -18,6 +19,7 @@ app.use(cookieParser());
 app.use("/api/auth", authRoutes);
 app.use("/api/address", addressRoutes);
 app.use("/api/services", servicesRoutes);
+app.use("/api/technicians", technicianRoutes);
 
 app.get("/", (req: Request, res: Response) => {
   res.json({ message: "This response is from the root route!" });
