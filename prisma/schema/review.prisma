@@ -1,7 +1,7 @@
 model Review {
   id         String @id @default(uuid())
   content    String
-  givenStars Int
+  givenStars Float
 
   userId String
   user   User   @relation(fields: [userId], references: [id])
