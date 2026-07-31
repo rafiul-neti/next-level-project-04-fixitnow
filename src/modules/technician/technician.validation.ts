@@ -25,7 +25,38 @@ export const updateTechnicianProfileSchema = z.object({
     .optional(),
 });
 
+const timeStringSchema = z
+  .string()
+  .regex(
+    /^([01]\d|2[0-3]):([0-5]\d)$/,
+    "Invalid time — hours must be 00-23 and minutes must be 00-59",
+  );
+
+export const updateAvailabilitySlotsSchema = z
+  .object({
+    weekendDays: z.nativeEnum(WeekendDays).optional(),
+    startTime: timeStringSchema.optional(),
+    endTime: timeStringSchema.optional(),
+  })
+  .refine(
+    (data) => {
+      if (data.startTime && data.endTime) {
+        return data.startTime < data.endTime;
+      }
+      return true;
+    },
+    {
+      message: "startTime must be before endTime!",
+      path: ["endTime"],
+    },
+  );
+
 export type TechnicianQuery = z.infer<typeof getTechnicianQuerySchema>;
+
 export type UpdateTechnicianProfile = z.infer<
   typeof updateTechnicianProfileSchema
+>;
+
+export type UpdateAvailabilitySlots = z.infer<
+  typeof updateAvailabilitySlotsSchema
 >;

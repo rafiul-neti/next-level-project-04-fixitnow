@@ -3,9 +3,22 @@ import { prisma } from "../../lib/prisma";
 import { AppError } from "../../utils/AppError";
 import {
   TechnicianQuery,
+  UpdateAvailabilitySlots,
   UpdateTechnicianProfile,
 } from "./technician.validation";
 import httpStatus from "http-status";
+
+const getTechnicianOrThrow = async (technicianId: string) => {
+  const technician = await prisma.technicianProfile.findUnique({
+    where: { userId: technicianId },
+  });
+
+  if (!technician) {
+    throw new AppError(httpStatus.NOT_FOUND, "Technician user not found!");
+  }
+
+  return technician;
+};
 
 const getAllTechniciansFromDB = async (query: TechnicianQuery) => {
   const {
@@ -91,13 +104,7 @@ const updateTechnicianProfileByTechnicianId = async (
   userId: string,
   payload: UpdateTechnicianProfile,
 ) => {
-  const technician = await prisma.technicianProfile.findUnique({
-    where: { userId },
-  });
-
-  if (!technician) {
-    throw new AppError(httpStatus.NOT_FOUND, "Technician user not found!");
-  }
+  const technician = await getTechnicianOrThrow(userId);
 
   const updateTechnicianProfile = await prisma.technicianProfile.update({
     where: { id: technician.id, userId },
@@ -108,8 +115,20 @@ const updateTechnicianProfileByTechnicianId = async (
 };
 
 const updateAvailabilitySlotsByTechnicianId = async (
-  technicianId: string,
-) => {};
+  userId: string,
+  payload: UpdateAvailabilitySlots,
+) => {
+  const technician = await getTechnicianOrThrow(userId);
+
+  const updateAvailability = await prisma.availability.update({
+    where: {
+      technicianId: technician.id,
+    },
+    data: { ...payload },
+  });
+
+  return updateAvailability;
+};
 
 const getTechnicianBookingsByTechnicianId = async (technicianId: string) => {};
 

@@ -3,6 +3,7 @@ import { technicianController } from "./technician.controller";
 import validateQuery from "../../middleware/validateQuery";
 import {
   getTechnicianQuerySchema,
+  updateAvailabilitySlotsSchema,
   updateTechnicianProfileSchema,
 } from "./technician.validation";
 import authGuard from "../../middleware/authGuard";
@@ -29,6 +30,7 @@ router.put(
 router.put(
   "/availability",
   authGuard(Role.TECHNICIAN),
+  validateRequest(updateAvailabilitySlotsSchema),
   technicianController.updateAvailabilitySlots,
 );
 

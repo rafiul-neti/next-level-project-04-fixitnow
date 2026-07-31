@@ -43,7 +43,19 @@ const updateTechnicianProfile = catchAsync(
 );
 
 const updateAvailabilitySlots = catchAsync(
-  async (req: Request, res: Response) => {},
+  async (req: Request, res: Response) => {
+    const result =
+      await technicianService.updateAvailabilitySlotsByTechnicianId(
+        req.user?.id as string,
+        req.body,
+      );
+
+    sendSuccessResponse(res, {
+      statusCode: httpStatus.OK,
+      message: "Technician user's availability slots updated successfully.",
+      data: result,
+    });
+  },
 );
 
 const getTechnicianBookings = catchAsync(
