@@ -13,7 +13,9 @@ router.post(
   validateRequest(createBookingSchema),
   bookingController.createBooking,
 );
+
 router.get("/", authGuard(Role.CUSTOMER), bookingController.getAllBookings);
+
 router.get(
   "/:id",
   authGuard(Role.CUSTOMER),
