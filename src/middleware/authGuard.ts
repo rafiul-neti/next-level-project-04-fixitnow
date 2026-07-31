@@ -4,8 +4,8 @@ import httpStatus from "http-status";
 import { jwtUtils } from "../utils/jwt";
 import config from "../config";
 import { JwtPayload } from "jsonwebtoken";
-import { prisma } from "../lib/prisma";
 import { Role } from "../../generated/prisma/enums";
+import validateUser from "../utils/validateUser";
 
 declare global {
   namespace Express {
@@ -42,18 +42,12 @@ const authGuard = (...roles: any) => {
         throw new AppError(httpStatus.UNAUTHORIZED, verifiedToken.error);
       }
 
-      const { id, name, email, role } = verifiedToken.data as JwtPayload;
-      if (role.length && !roles.includes(role)) {
+      const { id: userId, role: userRole } = verifiedToken.data as JwtPayload;
+      if (roles.length && !roles.includes(userRole)) {
         throw new AppError(httpStatus.FORBIDDEN, "Forbidden Access!");
       }
 
-      const user = await prisma.user.findUnique({ where: { id } });
-      if (!user) {
-        throw new AppError(
-          httpStatus.NOT_FOUND,
-          "User not found. Please log in again.",
-        );
-      }
+      const { id, name, email, role } = await validateUser(userId);
 
       req.user = { id, name, email, role };
 
