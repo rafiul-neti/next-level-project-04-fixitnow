@@ -4,6 +4,7 @@ import validateQuery from "../../middleware/validateQuery";
 import {
   getTechnicianQuerySchema,
   updateAvailabilitySlotsSchema,
+  updateBookingStatusSchema,
   updateTechnicianProfileSchema,
 } from "./technician.validation";
 import authGuard from "../../middleware/authGuard";
@@ -35,13 +36,14 @@ router.put(
 );
 
 router.get(
-  "/bookings",
+  "/technician/bookings",
   authGuard(Role.TECHNICIAN),
   technicianController.getTechnicianBookings,
 );
 
 router.patch(
-  "/bookings/:id",
+  "/bookings/:bookingId",
+  validateRequest(updateBookingStatusSchema),
   authGuard(Role.TECHNICIAN),
   technicianController.updateBookingStatus,
 );

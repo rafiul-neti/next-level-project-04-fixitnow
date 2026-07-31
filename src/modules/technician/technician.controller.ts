@@ -59,12 +59,32 @@ const updateAvailabilitySlots = catchAsync(
 );
 
 const getTechnicianBookings = catchAsync(
-  async (req: Request, res: Response) => {},
+  async (req: Request, res: Response) => {
+    const result = await technicianService.getTechnicianBookingsByTechnicianId(
+      req.user?.id as string,
+    );
+
+    sendSuccessResponse(res, {
+      statusCode: httpStatus.OK,
+      message: "Retrieved technician user's bookings successfully.",
+      data: result,
+    });
+  },
 );
 
-const updateBookingStatus = catchAsync(
-  async (req: Request, res: Response) => {},
-);
+const updateBookingStatus = catchAsync(async (req: Request, res: Response) => {
+  const result = await technicianService.updateBookingStatusByBookingId(
+    req.user?.id as string,
+    req.params.bookingId as string,
+    req.body,
+  );
+
+  sendSuccessResponse(res, {
+    statusCode: httpStatus.OK,
+    message: result.message,
+    data: result.data,
+  });
+});
 
 export const technicianController = {
   getAllTechnicians,

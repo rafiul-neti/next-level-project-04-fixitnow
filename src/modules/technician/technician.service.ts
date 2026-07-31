@@ -1,9 +1,11 @@
+import { BookingStatus } from "../../../generated/prisma/enums";
 import { TechnicianProfileWhereInput } from "../../../generated/prisma/models";
 import { prisma } from "../../lib/prisma";
 import { AppError } from "../../utils/AppError";
 import {
   TechnicianQuery,
   UpdateAvailabilitySlots,
+  UpdateBookingStatus,
   UpdateTechnicianProfile,
 } from "./technician.validation";
 import httpStatus from "http-status";
@@ -130,9 +132,55 @@ const updateAvailabilitySlotsByTechnicianId = async (
   return updateAvailability;
 };
 
-const getTechnicianBookingsByTechnicianId = async (technicianId: string) => {};
+const getTechnicianBookingsByTechnicianId = async (userId: string) => {
+  const technician = await getTechnicianOrThrow(userId);
 
-const updateBookingStatusByBookingId = async (technicianId: string) => {};
+  const bookings = await prisma.booking.findMany({
+    where: { technicianId: technician.id },
+  });
+
+  return bookings;
+};
+
+const updateBookingStatusByBookingId = async (
+  userId: string,
+  bookingId: string,
+  payload: UpdateBookingStatus,
+) => {
+  const technician = await getTechnicianOrThrow(userId);
+
+  const booking = await prisma.booking.findUnique({ where: { id: bookingId } });
+  if (!booking) {
+    throw new AppError(httpStatus.NOT_FOUND, "Booking not found!");
+  }
+
+  if (booking.status === payload.status) {
+    return {
+      message: "No changes were necessary. Status is already up-to-date",
+      data: booking,
+    };
+  }
+
+  if (booking.status === BookingStatus.COMPLETED) {
+    throw new AppError(
+      httpStatus.BAD_REQUEST,
+      "The booking is completed and can't be updated",
+    );
+  }
+
+  const updateBooking = await prisma.booking.update({
+    where: {
+      id: bookingId,
+      technicianId: technician.id,
+    },
+    data: { ...payload },
+  });
+
+  return {
+    message: "Booking status updated successfully.",
+    data: updateBooking,
+  };
+};
 
 export const technicianService = {
   getAllTechniciansFromDB,

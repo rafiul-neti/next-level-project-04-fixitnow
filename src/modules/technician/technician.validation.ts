@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { WeekendDays } from "../../../generated/prisma/enums";
+import { BookingStatus, WeekendDays } from "../../../generated/prisma/enums";
 
 export const getTechnicianQuerySchema = z.object({
   minHourlyRate: z.coerce.number().min(0).optional(),
@@ -51,6 +51,10 @@ export const updateAvailabilitySlotsSchema = z
     },
   );
 
+export const updateBookingStatusSchema = z.object({
+  status: z.nativeEnum(BookingStatus),
+});
+
 export type TechnicianQuery = z.infer<typeof getTechnicianQuerySchema>;
 
 export type UpdateTechnicianProfile = z.infer<
@@ -60,3 +64,5 @@ export type UpdateTechnicianProfile = z.infer<
 export type UpdateAvailabilitySlots = z.infer<
   typeof updateAvailabilitySlotsSchema
 >;
+
+export type UpdateBookingStatus = z.infer<typeof updateBookingStatusSchema>;
