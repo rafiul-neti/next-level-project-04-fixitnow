@@ -14,7 +14,18 @@ const getAllUsers = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-const updateUserStatus = catchAsync(async (req: Request, res: Response) => {});
+const updateUserStatus = catchAsync(async (req: Request, res: Response) => {
+  const result = await adminService.updateUserStatusByUserId(
+    req.params.userId as string,
+    req.body,
+  );
+
+  sendSuccessResponse(res, {
+    statusCode: httpStatus.OK,
+    message: result.message,
+    data: result.data,
+  });
+});
 
 const getAllBookings = catchAsync(async (req: Request, res: Response) => {});
 
