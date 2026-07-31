@@ -121,7 +121,20 @@ const createBookingIntoDB = async (
   return createdBooking;
 };
 
-const getAllBookingsFromDB = async () => {};
+const getAllBookingsFromDB = async (userId: string) => {
+  const user = await prisma.user.findUnique({ where: { id: userId } });
+
+  if (!user) {
+    throw new AppError(
+      httpStatus.NOT_FOUND,
+      "Something went wrong! Please Login.",
+    );
+  }
+
+  const bookings = await prisma.booking.findMany({ where: { userId } });
+
+  return bookings;
+};
 
 const getSingleBookingById = async () => {};
 
