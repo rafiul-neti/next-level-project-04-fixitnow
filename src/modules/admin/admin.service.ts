@@ -69,7 +69,11 @@ const getAllBookingsFromDB = async () => {
   return bookings;
 };
 
-const getAllCategoriesFromDB = async () => {};
+const getAllCategoriesFromDB = async () => {
+  const categories = await prisma.category.findMany();
+
+  return categories;
+};
 
 const createNewServiceCategoryIntoDB = async () => {};
 

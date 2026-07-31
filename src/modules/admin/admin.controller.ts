@@ -37,7 +37,15 @@ const getAllBookings = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-const getAllCategories = catchAsync(async (req: Request, res: Response) => {});
+const getAllCategories = catchAsync(async (req: Request, res: Response) => {
+  const result = await adminService.getAllCategoriesFromDB();
+
+  sendSuccessResponse(res, {
+    statusCode: httpStatus.OK,
+    message: "Retrieved all categories.",
+    data: result,
+  });
+});
 
 const createNewServiceCategory = catchAsync(
   async (req: Request, res: Response) => {},
