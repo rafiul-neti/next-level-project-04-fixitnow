@@ -5,4 +5,9 @@ export const userStatusSchema = z.object({
   status: z.nativeEnum(UserStatus),
 });
 
+export const createCategorySchema = z.object({
+  name: z.string(),
+});
+
 export type UserStatusInput = z.infer<typeof userStatusSchema>;
+export type CreateCategory = z.infer<typeof createCategorySchema>;

@@ -48,7 +48,15 @@ const getAllCategories = catchAsync(async (req: Request, res: Response) => {
 });
 
 const createNewServiceCategory = catchAsync(
-  async (req: Request, res: Response) => {},
+  async (req: Request, res: Response) => {
+    const result = await adminService.createNewServiceCategoryIntoDB(req.body);
+
+    sendSuccessResponse(res, {
+      statusCode: httpStatus.CREATED,
+      message: "A new category created successfully.",
+      data: result,
+    });
+  },
 );
 
 export const adminController = {

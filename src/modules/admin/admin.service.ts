@@ -1,6 +1,8 @@
 import { prisma } from "../../lib/prisma";
+import { AppError } from "../../utils/AppError";
 import findUserOrThrow from "../../utils/findUserOrThrow";
-import { UserStatusInput } from "./admin.validation";
+import { CreateCategory, UserStatusInput } from "./admin.validation";
+import httpStatus from "http-status";
 
 const getAllUsersFromDB = async () => {
   const users = await prisma.user.findMany({
@@ -70,12 +72,31 @@ const getAllBookingsFromDB = async () => {
 };
 
 const getAllCategoriesFromDB = async () => {
-  const categories = await prisma.category.findMany();
+  const categories = await prisma.category.findMany({
+    include: {
+      services: { select: { id: true, name: true, description: true } },
+    },
+  });
 
   return categories;
 };
 
-const createNewServiceCategoryIntoDB = async () => {};
+const createNewServiceCategoryIntoDB = async (payload: CreateCategory) => {
+  const category = await prisma.category.findUnique({
+    where: { name: payload.name },
+  });
+
+  if (category) {
+    throw new AppError(
+      httpStatus.CONFLICT,
+      "A category with this name already exists.",
+    );
+  }
+
+  const newCategory = await prisma.category.create({ data: { ...payload } });
+
+  return newCategory;
+};
 
 export const adminService = {
   getAllUsersFromDB,

@@ -3,7 +3,7 @@ import authGuard from "../../middleware/authGuard";
 import { Role } from "../../../generated/prisma/enums";
 import { adminController } from "./admin.controller";
 import validateRequest from "../../middleware/validateRequest";
-import { userStatusSchema } from "./admin.validation";
+import { createCategorySchema, userStatusSchema } from "./admin.validation";
 
 const router = Router();
 
@@ -27,6 +27,7 @@ router.get(
 router.post(
   "/categories",
   authGuard(Role.ADMIN),
+  validateRequest(createCategorySchema),
   adminController.createNewServiceCategory,
 );
 
