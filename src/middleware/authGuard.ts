@@ -5,7 +5,7 @@ import { jwtUtils } from "../utils/jwt";
 import config from "../config";
 import { JwtPayload } from "jsonwebtoken";
 import { Role } from "../../generated/prisma/enums";
-import validateUser from "../utils/validateUser";
+import findUserOrThrow from "../utils/findUserOrThrow";
 
 declare global {
   namespace Express {
@@ -47,7 +47,7 @@ const authGuard = (...roles: any) => {
         throw new AppError(httpStatus.FORBIDDEN, "Forbidden Access!");
       }
 
-      const { id, name, email, role } = await validateUser(userId);
+      const { id, name, email, role } = await findUserOrThrow(userId);
 
       req.user = { id, name, email, role };
 
