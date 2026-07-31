@@ -136,7 +136,44 @@ const getAllBookingsFromDB = async (userId: string) => {
   return bookings;
 };
 
-const getSingleBookingById = async () => {};
+const getSingleBookingById = async (userId: string, bookingId: string) => {
+  const user = await prisma.user.findUnique({ where: { id: userId } });
+
+  if (!user) {
+    throw new AppError(
+      httpStatus.NOT_FOUND,
+      "Something went wrong! Please Login.",
+    );
+  }
+
+  const booking = await prisma.booking.findUnique({
+    where: { id: bookingId },
+    include: {
+      service: { select: { name: true, category: { select: { name: true } } } },
+      technician: {
+        select: {
+          user: { select: { name: true } },
+          hourlyRate: true,
+          experienceYears: true,
+          availability: {
+            select: { startTime: true, endTime: true, weekendDays: true },
+          },
+        },
+      },
+      address: {
+        omit: { id: true, userId: true, createdAt: true, updatedAt: true },
+      },
+    },
+  });
+  if (!booking) {
+    throw new AppError(
+      httpStatus.NOT_FOUND,
+      "Booking details not found! Please try again.",
+    );
+  }
+
+  return booking;
+};
 
 export const bookingService = {
   createBookingIntoDB,
