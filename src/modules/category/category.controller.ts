@@ -9,7 +9,7 @@ const getAllCategories = catchAsync(async (req: Request, res: Response) => {
 
   sendSuccessResponse(res, {
     statusCode: httpStatus.OK,
-    message: "Retrieved all service categories successfully",
+    message: "Retrieved all categories along with their services successfully",
     data: result,
   });
 });

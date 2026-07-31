@@ -8,7 +8,7 @@ model User {
   technician TechnicianProfile?
   bookings   Booking[]
   reviews    Review[]
-  addresses Address[]
+  addresses  Address[]
 
   role   Role       @default(CUSTOMER)
   status UserStatus @default(UNBAN)

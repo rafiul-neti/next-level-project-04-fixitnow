@@ -8,6 +8,7 @@ import { addressRoutes } from "./modules/address/address.route";
 import { servicesRoutes } from "./modules/service/services.route";
 import { technicianRoutes } from "./modules/technician/technician.route";
 import { categoryRoutes } from "./modules/category/category.route";
+import { bookingRoutes } from "./modules/booking/booking.route";
 
 const app: Application = express();
 
@@ -22,6 +23,7 @@ app.use("/api/address", addressRoutes);
 app.use("/api/services", servicesRoutes);
 app.use("/api/technicians", technicianRoutes);
 app.use("/api/categories", categoryRoutes);
+app.use("/api/bookings", bookingRoutes);
 
 app.get("/", (req: Request, res: Response) => {
   res.json({ message: "This response is from the root route!" });

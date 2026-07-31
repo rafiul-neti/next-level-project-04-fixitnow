@@ -15,9 +15,9 @@ const getAllCategoriesFromDB = async () => {
 
   return {
     meta: { totalCategories },
-    data: result.map(({ _count, ...allCategories }) => ({
+    data: result.map(({ _count, ...categories }) => ({
       totalServicesUnderThisCategory: _count.services,
-      ...allCategories,
+      ...categories,
     })),
   };
 };

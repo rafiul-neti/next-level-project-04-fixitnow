@@ -11,7 +11,7 @@ model Booking {
   technician   TechnicianProfile @relation(fields: [technicianId], references: [id])
 
   addressId String
-  address Address @relation(fields: [addressId], references: [id])
+  address   Address @relation(fields: [addressId], references: [id])
 
   review  Review?
   payment Payment?
@@ -34,7 +34,7 @@ model Address {
   booking Booking[]
 
   userId String
-  user User @relation(fields: [userId], references: [id])
+  user   User   @relation(fields: [userId], references: [id])
 
   whereAbout WhereAbout @default(HOME)
 

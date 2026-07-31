@@ -10,11 +10,12 @@ model TechnicianProfile {
   user   User   @relation(fields: [userId], references: [id])
 
   reviews    Review[]
-  availabity Availability?
+  availability Availability?
   bookings   Booking[]
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @updatedAt
+  technicianServices TechnicianService[]
 
   @@map("technicianProfiles")
 }
@@ -29,7 +30,7 @@ model Availability {
   technician   TechnicianProfile @relation(fields: [technicianId], references: [id])
 
   createdAt DateTime @default(now())
-  updatedAT DateTime @updatedAt
+  updatedAt DateTime @updatedAt
 
   @@map("availability")
 }

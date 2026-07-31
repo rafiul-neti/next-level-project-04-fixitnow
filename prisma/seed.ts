@@ -1,6 +1,7 @@
 import bcrypt from "bcryptjs";
 import { prisma } from "../src/lib/prisma";
 import config from "../src/config";
+import { WeekendDays } from "../generated/prisma/enums";
 
 // Config
 const SALT_ROUNDS = Number(config.bcrypt_salt_rounds);
@@ -35,8 +36,8 @@ const SERVICES_BY_CATEGORY: Record<
         "Clear clogged drains in kitchens, bathrooms, and laundry areas.",
     },
     {
-      name: "Faucet Installation",
-      description: "Install or replace kitchen and bathroom faucets.",
+      name: "Faucet & Sink Installation",
+      description: "Install or replace kitchen and bathroom faucets and sinks.",
     },
   ],
   Electrical: [
@@ -46,7 +47,7 @@ const SERVICES_BY_CATEGORY: Record<
         "Full inspection of household wiring for safety and code compliance.",
     },
     {
-      name: "Switch & Socket Repair",
+      name: "Switch & Socket Installation & Repair",
       description: "Repair or replace faulty switches, sockets, and outlets.",
     },
     {
@@ -97,6 +98,10 @@ const SERVICES_BY_CATEGORY: Record<
       name: "Washing Machine Repair",
       description: "Fix drainage, spin, and motor issues in washing machines.",
     },
+    {
+      name: "Microwave Oven Repair",
+      description: "Diagnose and repair various issues in Microwave Ovens.",
+    },
   ],
   "Pest Control": [
     {
@@ -123,94 +128,163 @@ const SERVICES_BY_CATEGORY: Record<
 
 const TECHNICIAN_SEED = [
   {
-    name: "Karim Uddin",
-    email: "karim.tech@example.com",
-    categories: ["Plumbing"],
-    areas: ["Naogaon", "Rajshahi"],
-    hourlyRate: 350,
-    experienceYears: 5,
-    bio: "Licensed plumber with 5 years of residential experience.",
-  },
-  {
-    name: "Rafiqul Islam",
-    email: "rafiqul.tech@example.com",
-    categories: ["Plumbing", "HVAC"],
-    areas: ["Rajshahi"],
-    hourlyRate: 420,
+    name: "Arif Hossain",
+    email: "arif.hossain@example.com",
+    bio: "Licensed electrician with 8+ years of residential and commercial experience.",
+    hourlyRate: 800,
     experienceYears: 8,
-    bio: "Plumbing and HVAC specialist for homes and small offices.",
+    serviceAreas: ["Dhaka", "Gazipur"],
+    services: [
+      "Wiring Inspection",
+      "Switch & Socket Installation & Repair",
+      "Ceiling Fan Installation",
+    ],
+    availability: {
+      weekendDays: "SAT",
+      startTime: "09:00",
+      endTime: "18:00",
+    },
   },
   {
-    name: "Nasrin Akter",
-    email: "nasrin.tech@example.com",
-    categories: ["Electrical"],
-    areas: ["Naogaon"],
-    hourlyRate: 400,
-    experienceYears: 6,
-    bio: "Certified electrician focused on residential wiring safety.",
-  },
-  {
-    name: "Jahangir Alam",
-    email: "jahangir.tech@example.com",
-    categories: ["Electrical", "Appliance Repair"],
-    areas: ["Bogura", "Natore"],
-    hourlyRate: 380,
-    experienceYears: 4,
-    bio: "Handles both wiring jobs and common appliance repairs.",
-  },
-  {
-    name: "Salma Begum",
-    email: "salma.tech@example.com",
-    categories: ["Cleaning"],
-    areas: ["Rajshahi", "Natore"],
-    hourlyRate: 250,
-    experienceYears: 3,
-    bio: "Detail-oriented home cleaner, specializes in move-out cleans.",
-  },
-  {
-    name: "Mizanur Rahman",
-    email: "mizanur.tech@example.com",
-    categories: ["Cleaning", "Pest Control"],
-    areas: ["Naogaon", "Chapainawabganj"],
-    hourlyRate: 300,
-    experienceYears: 7,
-    bio: "Offers combined cleaning and pest treatment packages.",
-  },
-  {
-    name: "Abul Kashem",
-    email: "kashem.tech@example.com",
-    categories: ["Painting"],
-    areas: ["Pabna", "Natore"],
-    hourlyRate: 320,
-    experienceYears: 9,
-    bio: "Interior and exterior painter, 9 years in the trade.",
-  },
-  {
-    name: "Farida Yasmin",
-    email: "farida.tech@example.com",
-    categories: ["Carpentry"],
-    areas: ["Rajshahi"],
-    hourlyRate: 360,
-    experienceYears: 5,
-    bio: "Custom furniture repair and shelving installation.",
-  },
-  {
-    name: "Delwar Hossain",
-    email: "delwar.tech@example.com",
-    categories: ["HVAC", "Appliance Repair"],
-    areas: ["Bogura", "Rajshahi"],
-    hourlyRate: 450,
+    name: "Shakil Ahmed",
+    email: "shakil.ahmed@example.com",
+    bio: "Expert AC technician specializing in installation and maintenance.",
+    hourlyRate: 900,
     experienceYears: 10,
-    bio: "AC and major appliance repair veteran, 10 years experience.",
+    serviceAreas: ["Dhaka", "Narayanganj"],
+    services: ["AC Installation", "AC Servicing"],
+    availability: {
+      weekendDays: "FRI",
+      startTime: "10:00",
+      endTime: "19:00",
+    },
   },
   {
-    name: "Ruma Khatun",
-    email: "ruma.tech@example.com",
-    categories: ["Pest Control"],
-    areas: ["Naogaon", "Rajshahi", "Natore"],
-    hourlyRate: 280,
-    experienceYears: 2,
-    bio: "Newer to the trade, thorough and affordable pest treatments.",
+    name: "Rashed Karim",
+    email: "rashed.karim@example.com",
+    bio: "Professional plumber experienced in household and commercial plumbing.",
+    hourlyRate: 700,
+    experienceYears: 7,
+    serviceAreas: ["Dhaka", "Savar"],
+    services: [
+      "Pipe Leak Repair",
+      "Drain Cleaning",
+      "Faucet & Sink Installation",
+    ],
+    availability: {
+      weekendDays: "SAT",
+      startTime: "08:30",
+      endTime: "17:30",
+    },
+  },
+  {
+    name: "Imran Khan",
+    email: "imran.khan@example.com",
+    bio: "Experienced appliance repair technician for common household electronics.",
+    hourlyRate: 850,
+    experienceYears: 9,
+    serviceAreas: ["Dhaka", "Mirpur"],
+    services: [
+      "Refrigerator Repair",
+      "Washing Machine Repair",
+      "Microwave Oven Repair",
+    ],
+    availability: {
+      weekendDays: "FRI",
+      startTime: "09:00",
+      endTime: "18:00",
+    },
+  },
+  {
+    name: "Mahmud Hasan",
+    email: "mahmud.hasan@example.com",
+    bio: "Skilled painter delivering interior and exterior painting services.",
+    hourlyRate: 650,
+    experienceYears: 6,
+    serviceAreas: ["Dhaka", "Uttara"],
+    services: ["Interior Wall Painting", "Exterior House Painting"],
+    availability: {
+      weekendDays: "SAT",
+      startTime: "08:00",
+      endTime: "16:00",
+    },
+  },
+  {
+    name: "Tanvir Islam",
+    email: "tanvir.islam@example.com",
+    bio: "Carpenter specializing in custom furniture assembly and wood repairs.",
+    hourlyRate: 750,
+    experienceYears: 11,
+    serviceAreas: ["Dhaka", "Keraniganj"],
+    services: ["Custom Shelving", "Furniture Repair"],
+    availability: {
+      weekendDays: "FRI",
+      startTime: "09:30",
+      endTime: "18:30",
+    },
+  },
+  {
+    name: "Sabbir Rahman",
+    email: "sabbir.rahman@example.com",
+    bio: "Reliable home cleaning professional for apartments and offices.",
+    hourlyRate: 500,
+    experienceYears: 5,
+    serviceAreas: ["Dhaka", "Mohammadpur"],
+    services: [
+      "Sofa & Carpet Cleaning",
+      "Move-in/Move-out Cleaning",
+      "Deep House Cleaning",
+    ],
+    availability: {
+      weekendDays: "SAT",
+      startTime: "08:00",
+      endTime: "17:00",
+    },
+  },
+  {
+    name: "Nayeem Chowdhury",
+    email: "nayeem.chowdhury@example.com",
+    bio: "Experienced pest control specialist for residential and commercial properties.",
+    hourlyRate: 700,
+    experienceYears: 8,
+    serviceAreas: ["Dhaka", "Gulshan"],
+    services: ["Termite Inspection", "General Pest Treatment"],
+    availability: {
+      weekendDays: "FRI",
+      startTime: "09:00",
+      endTime: "18:00",
+    },
+  },
+  {
+    name: "Farhan Kabir",
+    email: "farhan.kabir@example.com",
+    bio: "Certified CCTV and smart home technician with expertise in security system installation.",
+    hourlyRate: 950,
+    experienceYears: 9,
+    serviceAreas: ["Dhaka", "Banani"],
+    services: [
+      "Switch & Socket Installation & Repair",
+      "Ceiling Fan Installation",
+    ],
+    availability: {
+      weekendDays: "SAT",
+      startTime: "10:00",
+      endTime: "18:30",
+    },
+  },
+  {
+    name: "Mehedi Hasan",
+    email: "mehedi.hasan@example.com",
+    bio: "Experienced handyman providing a wide range of home maintenance and repair services.",
+    hourlyRate: 650,
+    experienceYears: 7,
+    serviceAreas: ["Dhaka", "Bashundhara"],
+    services: ["Furniture Repair", "Custom Shelving"],
+    availability: {
+      weekendDays: "FRI",
+      startTime: "08:30",
+      endTime: "17:30",
+    },
   },
 ];
 
@@ -223,7 +297,7 @@ const CUSTOMER_SEED = [
 
 const ADMIN_SEED = { name: "Platform Admin", email: "admin@fixitnow.com" };
 
-const PHONE_PREFIX = "0169"; // BD mobile-style prefix; suffixed with a counter to stay unique + 11 digits
+const PHONE_PREFIX = "0169";
 
 function makePhone(counter: number) {
   return PHONE_PREFIX + String(1000000 + counter).slice(-7);
@@ -264,12 +338,11 @@ async function main() {
 
   // ---- 2. Services ----
   let serviceCount = 0;
-  const serviceIdsByCategory = new Map<string, string[]>();
+  const serviceIdByName = new Map<string, string>();
 
   for (const category of CATEGORIES) {
     const services = SERVICES_BY_CATEGORY[category];
     const categoryId = categoryIdByName.get(category)!;
-    const ids: string[] = [];
 
     for (const svc of services) {
       const created = await prisma.service.create({
@@ -279,11 +352,9 @@ async function main() {
           categoryId,
         },
       });
-      ids.push(created.id);
+      serviceIdByName.set(created.name, created.id);
       serviceCount++;
     }
-
-    serviceIdsByCategory.set(category, ids);
   }
   console.log(`Created ${serviceCount} services`);
 
@@ -346,22 +417,38 @@ async function main() {
         bio: t.bio,
         hourlyRate: t.hourlyRate,
         experienceYears: t.experienceYears,
-        serviceAreas: t.areas,
+        serviceAreas: t.serviceAreas,
       },
     });
+
+    for (const serviceName of t.services) {
+      const serviceId = serviceIdByName.get(serviceName);
+      if (!serviceId) continue;
+
+      await prisma.technicianService.upsert({
+        where: {
+          technicianId_serviceId: {
+            technicianId: profile.id,
+            serviceId,
+          },
+        },
+        update: {},
+        create: { technicianId: profile.id, serviceId, isActive: true },
+      });
+    }
 
     await prisma.availability.upsert({
       where: { technicianId: profile.id },
       update: {},
       create: {
         technicianId: profile.id,
-        weekendDays: "FRI",
-        startTime: "09:00",
-        endTime: "17:00",
+        weekendDays: t.availability.weekendDays as WeekendDays,
+        startTime: t.availability.startTime,
+        endTime: t.availability.endTime,
       },
     });
 
-    technicianProfiles.push({ profile, categories: t.categories, user });
+    technicianProfiles.push({ profile, services: t.services, user });
   }
   console.log(
     `Created ${technicianProfiles.length} technicians with availability`,
@@ -373,8 +460,8 @@ async function main() {
 
   for (const tech of technicianProfiles) {
     // give each technician 2-4 completed bookings + reviews, pulling services from their own categories
-    const eligibleServiceIds = tech.categories.flatMap(
-      (cat) => serviceIdsByCategory.get(cat) ?? [],
+    const eligibleServiceIds = tech.services.flatMap(
+      (service) => serviceIdByName.get(service) ?? [],
     );
     if (eligibleServiceIds.length === 0) continue;
 
