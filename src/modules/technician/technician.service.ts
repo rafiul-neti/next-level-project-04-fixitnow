@@ -44,7 +44,7 @@ const getAllTechniciansFromDB = async (query: TechnicianQuery) => {
   }
 
   if (weekendDays) {
-    andConditions.push({ availabity: { weekendDays } });
+    andConditions.push({ availability: { weekendDays } });
   }
 
   if (minRating) {
@@ -58,7 +58,7 @@ const getAllTechniciansFromDB = async (query: TechnicianQuery) => {
   const technicians = await prisma.technicianProfile.findMany({
     where,
     include: {
-      availabity: {
+      availability: {
         select: { startTime: true, endTime: true, weekendDays: true },
       },
     },

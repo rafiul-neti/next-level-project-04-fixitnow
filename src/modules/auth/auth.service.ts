@@ -54,7 +54,7 @@ const registerUserIntoDB = async (payload: IRegisterPayload) => {
             hourlyRate: payload.hourlyRate,
             experienceYears: payload.experienceYears,
             serviceAreas: [payload.serviceAreas],
-            availabity: {
+            availability: {
               create: {
                 weekendDays: payload.weekendDays,
                 startTime: payload.startTime,
@@ -70,7 +70,7 @@ const registerUserIntoDB = async (payload: IRegisterPayload) => {
       include: {
         technician: {
           omit: { userId: true },
-          include: { availabity: { omit: { id: true, technicianId: true } } },
+          include: { availability: { omit: { id: true, technicianId: true } } },
         },
       },
     }),
@@ -122,6 +122,13 @@ const getCurrentUserFromDB = async (userId: string, role: string) => {
       include: { addresses: { omit: { id: true, userId: true } } },
     }),
   });
+
+  if (!user) {
+    throw new AppError(
+      httpStatus.NOT_FOUND,
+      "User profile not found! Please log in.",
+    );
+  }
 
   return user;
 };
