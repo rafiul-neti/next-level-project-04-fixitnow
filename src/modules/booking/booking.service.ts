@@ -4,6 +4,18 @@ import { AppError } from "../../utils/AppError";
 import { CreateBookingInput } from "./booking.validation";
 import httpStatus from "http-status";
 
+const findWhetherUserExists = async (userId: string) => {
+  const user = await prisma.user.findUnique({ where: { id: userId } });
+  if (!user) {
+    throw new AppError(
+      httpStatus.NOT_FOUND,
+      "Something went wrong! Please Login.",
+    );
+  }
+
+  return user;
+};
+
 const createBookingIntoDB = async (
   userId: string,
   payload: CreateBookingInput,
@@ -122,14 +134,7 @@ const createBookingIntoDB = async (
 };
 
 const getAllBookingsFromDB = async (userId: string) => {
-  const user = await prisma.user.findUnique({ where: { id: userId } });
-
-  if (!user) {
-    throw new AppError(
-      httpStatus.NOT_FOUND,
-      "Something went wrong! Please Login.",
-    );
-  }
+  const user = await findWhetherUserExists(userId);
 
   const bookings = await prisma.booking.findMany({ where: { userId } });
 
@@ -137,14 +142,7 @@ const getAllBookingsFromDB = async (userId: string) => {
 };
 
 const getSingleBookingById = async (userId: string, bookingId: string) => {
-  const user = await prisma.user.findUnique({ where: { id: userId } });
-
-  if (!user) {
-    throw new AppError(
-      httpStatus.NOT_FOUND,
-      "Something went wrong! Please Login.",
-    );
-  }
+  const user = await findWhetherUserExists(userId);
 
   const booking = await prisma.booking.findUnique({
     where: { id: bookingId },
