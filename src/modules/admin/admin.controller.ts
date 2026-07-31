@@ -27,7 +27,15 @@ const updateUserStatus = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-const getAllBookings = catchAsync(async (req: Request, res: Response) => {});
+const getAllBookings = catchAsync(async (req: Request, res: Response) => {
+  const result = await adminService.getAllBookingsFromDB();
+
+  sendSuccessResponse(res, {
+    statusCode: httpStatus.OK,
+    message: "Retrieved all bookings.",
+    data: result,
+  });
+});
 
 const getAllCategories = catchAsync(async (req: Request, res: Response) => {});
 

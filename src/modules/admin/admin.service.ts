@@ -63,7 +63,11 @@ const updateUserStatusByUserId = async (
   return { message: "User's status updated successfully.", data: updateUser };
 };
 
-const getAllBookingsFromDB = async () => {};
+const getAllBookingsFromDB = async () => {
+  const bookings = await prisma.booking.findMany();
+
+  return bookings;
+};
 
 const getAllCategoriesFromDB = async () => {};
 
