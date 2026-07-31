@@ -1,6 +1,11 @@
 import { TechnicianProfileWhereInput } from "../../../generated/prisma/models";
 import { prisma } from "../../lib/prisma";
-import { TechnicianQuery } from "./technician.validation";
+import { AppError } from "../../utils/AppError";
+import {
+  TechnicianQuery,
+  UpdateTechnicianProfile,
+} from "./technician.validation";
+import httpStatus from "http-status";
 
 const getAllTechniciansFromDB = async (query: TechnicianQuery) => {
   const {
@@ -82,7 +87,39 @@ const getSingleTechnicianByID = async (technicianId: string) => {
   return technician;
 };
 
+const updateTechnicianProfileByTechnicianId = async (
+  userId: string,
+  payload: UpdateTechnicianProfile,
+) => {
+  const technician = await prisma.technicianProfile.findUnique({
+    where: { userId },
+  });
+
+  if (!technician) {
+    throw new AppError(httpStatus.NOT_FOUND, "Technician user not found!");
+  }
+
+  const updateTechnicianProfile = await prisma.technicianProfile.update({
+    where: { id: technician.id, userId },
+    data: { ...payload },
+  });
+
+  return updateTechnicianProfile;
+};
+
+const updateAvailabilitySlotsByTechnicianId = async (
+  technicianId: string,
+) => {};
+
+const getTechnicianBookingsByTechnicianId = async (technicianId: string) => {};
+
+const updateBookingStatusByBookingId = async (technicianId: string) => {};
+
 export const technicianService = {
   getAllTechniciansFromDB,
   getSingleTechnicianByID,
+  updateTechnicianProfileByTechnicianId,
+  updateAvailabilitySlotsByTechnicianId,
+  getTechnicianBookingsByTechnicianId,
+  updateBookingStatusByBookingId,
 };

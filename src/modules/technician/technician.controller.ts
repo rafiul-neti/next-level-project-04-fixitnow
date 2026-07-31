@@ -26,4 +26,39 @@ const getSingleTechnician = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-export const technicianController = { getAllTechnicians, getSingleTechnician };
+const updateTechnicianProfile = catchAsync(
+  async (req: Request, res: Response) => {
+    const result =
+      await technicianService.updateTechnicianProfileByTechnicianId(
+        req.user?.id as string,
+        req.body,
+      );
+
+    sendSuccessResponse(res, {
+      statusCode: httpStatus.OK,
+      message: "Technician user's profile updated successfully.",
+      data: result,
+    });
+  },
+);
+
+const updateAvailabilitySlots = catchAsync(
+  async (req: Request, res: Response) => {},
+);
+
+const getTechnicianBookings = catchAsync(
+  async (req: Request, res: Response) => {},
+);
+
+const updateBookingStatus = catchAsync(
+  async (req: Request, res: Response) => {},
+);
+
+export const technicianController = {
+  getAllTechnicians,
+  getSingleTechnician,
+  updateTechnicianProfile,
+  updateAvailabilitySlots,
+  getTechnicianBookings,
+  updateBookingStatus,
+};

@@ -1,7 +1,6 @@
 import { WhereAbout } from "../../../generated/prisma/enums";
 import { prisma } from "../../lib/prisma";
 import { AppError } from "../../utils/AppError";
-import findUserOrThrow from "../../utils/findUserOrThrow";
 import { CreateBookingInput } from "./booking.validation";
 import httpStatus from "http-status";
 
@@ -123,16 +122,12 @@ const createBookingIntoDB = async (
 };
 
 const getAllBookingsFromDB = async (userId: string) => {
-  const user = await findUserOrThrow(userId);
-
   const bookings = await prisma.booking.findMany({ where: { userId } });
 
   return bookings;
 };
 
 const getSingleBookingById = async (userId: string, bookingId: string) => {
-  const user = await findUserOrThrow(userId);
-
   const booking = await prisma.booking.findUnique({
     where: { id: bookingId },
     include: {

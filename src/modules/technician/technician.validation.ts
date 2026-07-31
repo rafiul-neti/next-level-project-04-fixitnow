@@ -14,4 +14,18 @@ export const getTechnicianQuerySchema = z.object({
   searchTerm: z.string().optional(),
 });
 
+export const updateTechnicianProfileSchema = z.object({
+  profilePhoto: z.string().optional(),
+  bio: z.string().optional(),
+  experienceYears: z.number().optional(),
+  hourlyRate: z.number().optional(),
+  serviceAreas: z
+    .string()
+    .transform((v) => v.split(",").map((a) => a.trim()))
+    .optional(),
+});
+
 export type TechnicianQuery = z.infer<typeof getTechnicianQuerySchema>;
+export type UpdateTechnicianProfile = z.infer<
+  typeof updateTechnicianProfileSchema
+>;
