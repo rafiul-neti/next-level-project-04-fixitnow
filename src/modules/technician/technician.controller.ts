@@ -3,7 +3,6 @@ import catchAsync from "../../utils/catchAsync";
 import { technicianService } from "./technician.service";
 import { sendSuccessResponse } from "../../utils/sendSuccessResponse";
 import httpStatus from "http-status";
-import { getTechnicianQuerySchema } from "./technician.validation";
 
 const getAllTechnicians = catchAsync(async (req: Request, res: Response) => {
   const result = await technicianService.getAllTechniciansFromDB(
