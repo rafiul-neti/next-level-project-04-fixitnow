@@ -13,6 +13,13 @@ model Booking {
   addressId String
   address   Address @relation(fields: [addressId], references: [id])
 
+  startedAt DateTime?
+  completedAt DateTime?
+
+  workedMinutes Int?
+
+  totalPrice Decimal? @db.Decimal(10, 2)
+
   review  Review?
   payment Payment?
 
