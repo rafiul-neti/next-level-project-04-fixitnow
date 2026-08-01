@@ -92,7 +92,7 @@ const getSingleTechnicianByID = async (technicianId: string) => {
     where: { id: technicianId },
     include: {
       reviews: { omit: { technicianId: true, id: true } },
-      availabity: {
+      availability: {
         select: { weekendDays: true, startTime: true, endTime: true },
       },
       _count: { select: { reviews: true } },
