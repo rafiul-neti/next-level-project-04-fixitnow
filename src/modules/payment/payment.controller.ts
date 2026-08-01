@@ -1,7 +1,21 @@
 import { Request, Response } from "express";
 import catchAsync from "../../utils/catchAsync";
+import { paymentService } from "./payment.service";
+import { sendSuccessResponse } from "../../utils/sendSuccessResponse";
+import httpStatus from "http-status";
 
-const createSession = catchAsync(async (req: Request, res: Response) => {});
+const createSession = catchAsync(async (req: Request, res: Response) => {
+  const result = await paymentService.createCheckoutSession(
+    req.user?.id as string,
+    req.params.bookingId as string,
+  );
+
+  sendSuccessResponse(res, {
+    statusCode: httpStatus.CREATED,
+    message: "Thank you for your order!",
+    data: result,
+  });
+});
 
 const confirmPaymentSession = catchAsync(
   async (req: Request, res: Response) => {},

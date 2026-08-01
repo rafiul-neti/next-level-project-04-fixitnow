@@ -6,7 +6,7 @@ import { Role } from "../../../generated/prisma/enums";
 const router = Router();
 
 router.post(
-  "/checkout",
+  "/create/:bookingId",
   authGuard(Role.CUSTOMER),
   paymentController.createSession,
 );

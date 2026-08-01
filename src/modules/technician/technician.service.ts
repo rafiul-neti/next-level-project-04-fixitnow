@@ -187,14 +187,15 @@ const updateBookingStatusByBookingId = async (
       );
     }
 
-    updateData.completedAt = new Date();
-    updateData.workedMinutes = Math.round(
-      (updateData.completedAt.getTime() - booking.startedAt.getTime()) /
-        1000 /
-        60,
+    const completedAt = new Date();
+    const workedMinutes = Math.round(
+      (completedAt.getTime() - booking.startedAt.getTime()) / 1000 / 60,
     );
-    updateData.totalPrice =
-      (updateData.workedMinutes / 60) * Number(technician.hourlyRate);
+    const totalPrice = (workedMinutes / 60) * Number(technician.hourlyRate);
+
+    updateData.completedAt = completedAt;
+    updateData.workedMinutes = workedMinutes;
+    updateData.totalPrice = totalPrice;
   }
 
   const updateBooking = await prisma.booking.update({
@@ -202,7 +203,7 @@ const updateBookingStatusByBookingId = async (
       id: bookingId,
       technicianId: technician.id,
     },
-    data: { ...payload },
+    data: updateData,
   });
 
   return {
