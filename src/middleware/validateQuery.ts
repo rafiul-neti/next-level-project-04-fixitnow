@@ -1,10 +1,18 @@
 import { NextFunction, Request, Response } from "express";
 import { ZodType } from "zod";
 
+declare global {
+  namespace Express {
+    interface Request {
+      validatedQuery?: any;
+    }
+  }
+}
+
 const validateQuery = (schema: ZodType) => {
   return (req: Request, res: Response, next: NextFunction) => {
     try {
-      req.query = schema.parse(req.query) as any;
+      req.validatedQuery = schema.parse(req.query) as any;
       next();
     } catch (error) {
       next(error);

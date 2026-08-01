@@ -6,7 +6,9 @@ import httpStatus from "http-status";
 import { getTechnicianQuerySchema } from "./technician.validation";
 
 const getAllTechnicians = catchAsync(async (req: Request, res: Response) => {
-  const result = await technicianService.getAllTechniciansFromDB(req.query);
+  const result = await technicianService.getAllTechniciansFromDB(
+    req.validatedQuery,
+  );
 
   sendSuccessResponse(res, {
     statusCode: httpStatus.OK,
