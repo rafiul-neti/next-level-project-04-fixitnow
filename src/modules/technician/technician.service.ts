@@ -91,11 +91,11 @@ const getSingleTechnicianByID = async (technicianId: string) => {
   const technician = await prisma.technicianProfile.findUniqueOrThrow({
     where: { id: technicianId },
     include: {
+      _count: { select: { reviews: true } },
       reviews: { omit: { technicianId: true, id: true } },
       availability: {
         select: { weekendDays: true, startTime: true, endTime: true },
       },
-      _count: { select: { reviews: true } },
     },
   });
 
