@@ -1,5 +1,8 @@
 import { BookingStatus } from "../../../generated/prisma/enums";
-import { TechnicianProfileWhereInput } from "../../../generated/prisma/models";
+import {
+  BookingUpdateInput,
+  TechnicianProfileWhereInput,
+} from "../../../generated/prisma/models";
 import { prisma } from "../../lib/prisma";
 import { AppError } from "../../utils/AppError";
 import {
@@ -149,7 +152,9 @@ const updateBookingStatusByBookingId = async (
 ) => {
   const technician = await getTechnicianOrThrow(userId);
 
-  const booking = await prisma.booking.findUnique({ where: { id: bookingId } });
+  const booking = await prisma.booking.findUnique({
+    where: { id: bookingId, technicianId: technician.id },
+  });
   if (!booking) {
     throw new AppError(httpStatus.NOT_FOUND, "Booking not found!");
   }
@@ -166,6 +171,30 @@ const updateBookingStatusByBookingId = async (
       httpStatus.BAD_REQUEST,
       "The booking is completed and can't be updated",
     );
+  }
+
+  const updateData: BookingUpdateInput = { ...payload };
+
+  if (payload.status === BookingStatus.ACCEPTED) {
+    updateData.startedAt = new Date();
+  }
+
+  if (payload.status === BookingStatus.COMPLETED) {
+    if (!booking.startedAt) {
+      throw new AppError(
+        httpStatus.BAD_REQUEST,
+        "Booking cannot be completed before it has started!",
+      );
+    }
+
+    updateData.completedAt = new Date();
+    updateData.workedMinutes = Math.round(
+      (updateData.completedAt.getTime() - booking.startedAt.getTime()) /
+        1000 /
+        60,
+    );
+    updateData.totalPrice =
+      (updateData.workedMinutes / 60) * Number(technician.hourlyRate);
   }
 
   const updateBooking = await prisma.booking.update({
