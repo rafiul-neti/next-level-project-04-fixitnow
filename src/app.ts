@@ -12,7 +12,6 @@ import { bookingRoutes } from "./modules/booking/booking.route";
 import { reviewRoutes } from "./modules/review/review.route";
 import { adminRoutes } from "./modules/admin/admin.route";
 import { paymentRoutes } from "./modules/payment/payment.route";
-import { paymentController } from "./modules/payment/payment.controller";
 import { notFound } from "./middleware/not-found";
 
 const app: Application = express();
