@@ -3,6 +3,7 @@ import catchAsync from "../../utils/catchAsync";
 import { paymentService } from "./payment.service";
 import { sendSuccessResponse } from "../../utils/sendSuccessResponse";
 import httpStatus from "http-status";
+import { paymentIdSchema } from "./payment.validation";
 
 const createSession = catchAsync(async (req: Request, res: Response) => {
   const result = await paymentService.createCheckoutSession(
@@ -28,10 +29,24 @@ const confirmPaymentSession = catchAsync(
   },
 );
 
-const getUserPayments = catchAsync(async (req: Request, res: Response) => {});
+const getUserPayments = catchAsync(async (req: Request, res: Response) => {
+  const result = await paymentService.getUserPaymentsFromDB(
+    req.user?.id as string,
+  );
+
+  sendSuccessResponse(res, {
+    statusCode: httpStatus.OK,
+    message: "Payments retrieved successfully.",
+    data: result,
+  });
+});
 
 const getSinglePaymentDetails = catchAsync(
-  async (req: Request, res: Response) => {},
+  async (req: Request, res: Response) => {
+    const { paymentId } = paymentIdSchema.parse(req.params);
+
+    const result = await paymentService.getPaymentDetailsByID(paymentId)
+  },
 );
 
 export const paymentController = {

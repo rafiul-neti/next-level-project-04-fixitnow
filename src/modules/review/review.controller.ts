@@ -3,11 +3,13 @@ import catchAsync from "../../utils/catchAsync";
 import httpStatus from "http-status";
 import { reviewService } from "./review.service";
 import { sendSuccessResponse } from "../../utils/sendSuccessResponse";
+import { bookingIdSchema } from "./review.validation";
 
 const createReview = catchAsync(async (req: Request, res: Response) => {
+  const { bookingId } = bookingIdSchema.parse(req.params);
   const result = await reviewService.createReviewIntoDB(
     req.user?.id as string,
-    req.params.bookingId as string,
+    bookingId,
     req.body,
   );
 

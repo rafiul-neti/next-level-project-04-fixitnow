@@ -10,6 +10,8 @@ model User {
   reviews    Review[]
   addresses  Address[]
 
+  payments Payment[]
+
   role   Role       @default(CUSTOMER)
   status UserStatus @default(UNBAN)
 

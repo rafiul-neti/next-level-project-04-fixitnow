@@ -41,7 +41,7 @@ const createCheckoutSession = async (customerId: string, bookingId: string) => {
     mode: "payment",
     payment_method_types: ["card"],
     customer_email: booking.user.email,
-    metadata: { userId: customerId, bookingId: booking.id },
+    metadata: { userId: booking.userId, bookingId: booking.id },
     payment_intent_data: { metadata: { bookingId: booking.id } },
     success_url: `${config.app_url}/${booking.id}/checkout?success=true`,
     cancel_url: `${config.app_url}/${booking.id}/checkout?success=false`,
@@ -51,6 +51,7 @@ const createCheckoutSession = async (customerId: string, bookingId: string) => {
     where: { bookingId },
     create: {
       bookingId: booking.id,
+      userId: booking.userId,
       stripeCheckoutSessionId: session.id,
       amount: Number(booking.totalPrice),
       method: "card",
@@ -108,9 +109,13 @@ const confirmPaymentWebhook = async (payload: Buffer, signature: string) => {
   }
 };
 
-const getUserPaymentsFromDB = async () => {};
+const getUserPaymentsFromDB = async (userId: string) => {
+  const payments = await prisma.payment.findMany({ where: { userId } });
 
-const getPaymentDetailsByID = async () => {};
+  return payments;
+};
+
+const getPaymentDetailsByID = async (paymentId: string) => {};
 
 export const paymentService = {
   createCheckoutSession,

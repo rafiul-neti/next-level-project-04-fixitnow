@@ -11,6 +11,11 @@ router.post(
   paymentController.createSession,
 );
 
+router.post(
+  "/webhook",
+  paymentController.confirmPaymentSession,
+);
+
 router.get("/", authGuard(Role.CUSTOMER), paymentController.getUserPayments);
 
 router.get(

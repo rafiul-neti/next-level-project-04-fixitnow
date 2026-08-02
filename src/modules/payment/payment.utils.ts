@@ -10,6 +10,7 @@ export const handleCheckoutSessionCompleted = async (
   session: Stripe.Checkout.Session,
 ) => {
   const bookingId = session.metadata?.bookingId;
+  const userId = session.metadata?.userId!;
 
   if (session.payment_status !== "paid") return;
 
@@ -36,6 +37,7 @@ export const handleCheckoutSessionCompleted = async (
         },
         create: {
           bookingId,
+          userId,
           stripeCheckoutSessionId: session.id,
           stripePaymentIntentId: session.payment_intent as string,
           amount: (session.amount_total ?? 0) / 100,

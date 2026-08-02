@@ -3,6 +3,7 @@ import catchAsync from "../../utils/catchAsync";
 import { bookingService } from "./booking.service";
 import { sendSuccessResponse } from "../../utils/sendSuccessResponse";
 import httpStatus from "http-status";
+import { idSchema } from "./booking.validation";
 
 const createBooking = catchAsync(async (req: Request, res: Response) => {
   const result = await bookingService.createBookingIntoDB(
@@ -30,9 +31,10 @@ const getAllBookings = catchAsync(async (req: Request, res: Response) => {
 });
 
 const getSingleBooking = catchAsync(async (req: Request, res: Response) => {
+  const { id } = idSchema.parse(req.params);
   const result = await bookingService.getSingleBookingById(
     req.user?.id as string,
-    req.params.id as string,
+    id,
   );
 
   sendSuccessResponse(res, {

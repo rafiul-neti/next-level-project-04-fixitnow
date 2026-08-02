@@ -25,4 +25,8 @@ export const createBookingSchema = z.discriminatedUnion("useExistingAddress", [
   createBookingWithNewAddressSchema,
 ]);
 
+export const idSchema = z.object({
+  id: z.uuid(),
+});
+
 export type CreateBookingInput = z.infer<typeof createBookingSchema>;
