@@ -5,7 +5,7 @@
   "main": "server.ts",
   "scripts": {
     "dev": "tsx watch src/server.ts",
-    "build": "tsup",
+    "build": "tsup && vercel --prod",
     "start": "node dist/server.js",
     "db:seed": "prisma db seed",
     "db:migrate": "prisma migrate dev",

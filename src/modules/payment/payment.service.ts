@@ -110,7 +110,10 @@ const confirmPaymentWebhook = async (payload: Buffer, signature: string) => {
 };
 
 const getUserPaymentsFromDB = async (userId: string) => {
-  const payments = await prisma.payment.findMany({ where: { userId } });
+  const payments = await prisma.payment.findMany({
+    where: { userId },
+    orderBy: { createdAt: "desc" },
+  });
 
   return payments;
 };
