@@ -13,15 +13,13 @@ import { reviewRoutes } from "./modules/review/review.route";
 import { adminRoutes } from "./modules/admin/admin.route";
 import { paymentRoutes } from "./modules/payment/payment.route";
 import { paymentController } from "./modules/payment/payment.controller";
+import { notFound } from "./middleware/not-found";
 
 const app: Application = express();
 
 app.use(cors({ origin: config.app_url }));
 
-app.use(
-  "/api/payments/webhook",
-  express.raw({ type: "application/json" }),
-);
+app.use("/api/payments/webhook", express.raw({ type: "application/json" }));
 
 app.use(express.json());
 app.use(express.text());
@@ -41,6 +39,8 @@ app.use("/api/payments", paymentRoutes);
 app.get("/", (req: Request, res: Response) => {
   res.json({ message: "This response is from the root route!" });
 });
+
+app.use(notFound);
 
 app.use(globalErrorHandler);
 
