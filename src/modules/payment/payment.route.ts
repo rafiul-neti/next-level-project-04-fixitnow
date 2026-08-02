@@ -11,12 +11,6 @@ router.post(
   paymentController.createSession,
 );
 
-router.post(
-  "/confirm-checkout",
-  authGuard(Role.CUSTOMER),
-  paymentController.confirmPaymentSession,
-);
-
 router.get("/", authGuard(Role.CUSTOMER), paymentController.getUserPayments);
 
 router.get(

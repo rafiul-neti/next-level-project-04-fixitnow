@@ -18,7 +18,14 @@ const createSession = catchAsync(async (req: Request, res: Response) => {
 });
 
 const confirmPaymentSession = catchAsync(
-  async (req: Request, res: Response) => {},
+  async (req: Request, res: Response) => {
+    const event = req.body as Buffer;
+    const signature = req.headers["stripe-signature"] as string;
+
+    await paymentService.confirmPaymentWebhook(event, signature);
+
+    res.status(200).json({ received: true });
+  },
 );
 
 const getUserPayments = catchAsync(async (req: Request, res: Response) => {});

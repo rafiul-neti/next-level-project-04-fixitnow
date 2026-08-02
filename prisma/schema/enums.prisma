@@ -30,7 +30,7 @@ enum WeekendDays {
 // payments enums
 enum PaymentStatus {
   PENDING
-  COMPLETED
+  SUCCEEDED
   FAILED
 }
 
@@ -38,4 +38,10 @@ enum PaymentStatus {
 enum WhereAbout {
   HOME
   OFFICE
+}
+
+// payment provider enums
+enum PaymentProvider {
+  STRIPE
+  SSLCOMMERZ
 }
