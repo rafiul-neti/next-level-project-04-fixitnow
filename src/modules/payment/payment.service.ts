@@ -115,7 +115,60 @@ const getUserPaymentsFromDB = async (userId: string) => {
   return payments;
 };
 
-const getPaymentDetailsByID = async (paymentId: string) => {};
+const getPaymentDetailsByID = async (paymentId: string) => {
+  const payment = await prisma.payment.findUnique({
+    where: { id: paymentId },
+    include: {
+      booking: {
+        select: {
+          service: {
+            select: {
+              name: true,
+              category: { select: { name: true } },
+              description: true,
+            },
+          },
+          technician: {
+            select: {
+              user: { select: { name: true } },
+              bio: true,
+              experienceYears: true,
+              profilePhoto: true,
+              reviews: { select: { givenStars: true } },
+            },
+          },
+        },
+      },
+    },
+  });
+
+  if (!payment) {
+    throw new AppError(
+      httpStatus.NOT_FOUND,
+      "Payment details is not available!",
+    );
+  }
+
+  const { booking, ...rest } = payment;
+
+  return {
+    ...rest,
+    bookingDetails: {
+      serviceName: booking.service.name,
+      serviceCategory: booking.service.category.name,
+      serviceDescription: booking.service.description,
+      technicianName: booking.technician.user.name,
+      technicianBio: booking.technician.bio,
+      technicianExperienceYears: booking.technician.experienceYears,
+      technicianPhoto: booking.technician.profilePhoto,
+      technicianRating:
+        booking.technician.reviews.reduce(
+          (acc, curr) => acc + curr.givenStars,
+          0,
+        ) / booking.technician.reviews.length,
+    },
+  };
+};
 
 export const paymentService = {
   createCheckoutSession,

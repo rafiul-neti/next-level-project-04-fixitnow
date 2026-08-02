@@ -45,7 +45,13 @@ const getSinglePaymentDetails = catchAsync(
   async (req: Request, res: Response) => {
     const { paymentId } = paymentIdSchema.parse(req.params);
 
-    const result = await paymentService.getPaymentDetailsByID(paymentId)
+    const result = await paymentService.getPaymentDetailsByID(paymentId);
+
+    sendSuccessResponse(res, {
+      statusCode: httpStatus.OK,
+      message: "Payment details retrieved.",
+      data: result,
+    });
   },
 );
 
